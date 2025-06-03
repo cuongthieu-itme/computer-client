@@ -1,15 +1,13 @@
 // src/components/dialogs/OrderDetailsDialog.tsx
-import React, { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Loader2, AlertCircle, CheckCircle2, XCircle, FileText, UserCircle, Ticket, QrCode as QrCodeIcon, ZoomIn, Download } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { FetchedOrderDetailsResultDTO, ConfirmedOrderTicketInfoDTO } from "@/types/api/payment.api";
-import { format, parseISO, isValid } from "date-fns";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { QRCodeCanvas } from "qrcode.react";
+import { ConfirmedOrderTicketInfoDTO, FetchedOrderDetailsResultDTO } from "@/types/api/payment.api";
+import { format, isValid, parseISO } from "date-fns";
+import { AlertCircle, CheckCircle2, FileText, Loader2, QrCode as QrCodeIcon, Ticket, UserCircle, XCircle, ZoomIn } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
 interface OrderDetailsDialogProps {
   isOpen?: boolean;
@@ -195,14 +193,7 @@ const OrderDetailsDialog: React.FC<OrderDetailsDialogProps> = ({
                           }}
                           aria-label="Lihat kod QR lebih besar untuk tiket ini"
                         >
-                          <QRCodeCanvas
-                            value={ticket.encryptedId}
-                            size={128}
-                            bgColor={"#ffffff"}
-                            fgColor={"#000000"}
-                            level={"L"}
-                            includeMargin={true}
-                          />
+                          QR
                         </div>
                         <Button
                           size="sm"
@@ -278,8 +269,8 @@ const OrderDetailsDialog: React.FC<OrderDetailsDialogProps> = ({
           {renderAsPageSection
             ? `Pesanan #${orderProfile.orderNo}`
             : dialogTitle === "Butiran Pesanan"
-            ? `Butiran untuk Pesanan #${orderProfile.orderNo}`
-            : dialogTitle}
+              ? `Butiran untuk Pesanan #${orderProfile.orderNo}`
+              : dialogTitle}
         </p>
         <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 px-2">
           {isFailed && `Isu dengan pembayaran untuk pesanan #${orderProfile.orderNo}. ${orderProfile.statusMessage || ""}`}
@@ -354,7 +345,7 @@ const OrderDetailsDialog: React.FC<OrderDetailsDialogProps> = ({
           </DialogHeader>
           {selectedQrValue && (
             <div className="p-3 sm:p-4 my-3 sm:my-4 bg-white rounded-lg shadow-lg inline-block">
-              <QRCodeCanvas value={selectedQrValue} size={228} bgColor={"#ffffff"} fgColor={"#000000"} level={"M"} includeMargin={true} />
+              QR
             </div>
           )}
           <p className="text-[10px] sm:text-xs text-muted-foreground max-w-full text-center break-all px-2">ID: {selectedQrValue}</p>
