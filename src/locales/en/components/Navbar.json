@@ -1,0 +1,16 @@
+{
+  "logoAlt": "eTicket Johor Portal Logo",
+  "brandName": "eTiket Johor",
+  "account.myAccount": "My Account",
+  "account.personalInfo": "Personal Info",
+  "account.orderHistory": "Order History",
+  "account.logout": "Log Out",
+  "account.login": "Log In",
+  "account.register": "Register",
+  "account.nonMemberOrderInquiry": "Non-Member Order Inquiry",
+  "mobileMenu.close": "Close menu",
+  "mobileMenu.open": "Open menu",
+  "mobileMenu.lang.en": "English",
+  "mobileMenu.lang.ms": "Bahasa Malaysia",
+  "mobileMenu.lang.zhCN": "中文 (简体)"
+}

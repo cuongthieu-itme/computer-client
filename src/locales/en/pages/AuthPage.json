@@ -1,0 +1,13 @@
+{
+  "title": "Access Your Account",
+  "description.login": "Log in to manage your bookings and enjoy member benefits.",
+  "description.register": "Create an account to start your ticketing journey.",
+  "tabs.login": "Log In",
+  "tabs.register": "Register",
+  "nonMemberInquiry.button": "Non-Member Order Inquiry",
+  "nonMemberInquiry.description": "Check your order without an account",
+  "footer.agreementPart1": "By creating an account or logging in, you agree to our ",
+  "footer.agreementPart2": " and ",
+  "footer.agreementPart3": ".",
+  "footer.backToHome": "Back to Home"
+}

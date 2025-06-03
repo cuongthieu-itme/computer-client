@@ -1,0 +1,13 @@
+{
+  "title": "Akses Akaun Anda",
+  "description.login": "Log masuk untuk menguruskan tempahan anda dan nikmati faedah ahli.",
+  "description.register": "Cipta akaun untuk memulakan perjalanan tiket anda.",
+  "tabs.login": "Log Masuk",
+  "tabs.register": "Daftar",
+  "nonMemberInquiry.button": "Pertanyaan Pesanan Bukan Ahli",
+  "nonMemberInquiry.description": "Semak pesanan anda tanpa akaun",
+  "footer.agreementPart1": "Dengan membuat akaun atau log masuk, anda bersetuju dengan ",
+  "footer.agreementPart2": " dan ",
+  "footer.agreementPart3": " kami.",
+  "footer.backToHome": "Kembali ke Laman Utama"
+}

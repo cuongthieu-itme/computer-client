@@ -1,0 +1,16 @@
+{
+  "logoAlt": "柔佛电子票务门户徽标",
+  "brandName": "柔佛电子票务",
+  "account.myAccount": "我的账户",
+  "account.personalInfo": "个人信息",
+  "account.orderHistory": "订单历史",
+  "account.logout": "登出",
+  "account.login": "登录",
+  "account.register": "注册",
+  "account.nonMemberOrderInquiry": "非会员订单查询",
+  "mobileMenu.close": "关闭菜单",
+  "mobileMenu.open": "打开菜单",
+  "mobileMenu.lang.en": "English",
+  "mobileMenu.lang.ms": "Bahasa Malaysia",
+  "mobileMenu.lang.zhCN": "中文 (简体)"
+}

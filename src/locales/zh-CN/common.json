@@ -1,0 +1,16 @@
+{
+  "login": "Login",
+  "logout": "Logout",
+  "register": "Register",
+  "myAccount": "My Account",
+  "language": "Language",
+  "email": "Email",
+  "password": "Password",
+  "termsOfService": "Terms of Service",
+  "privacyPolicy": "Privacy Policy",
+  "faq": "FAQ",
+  "contactUs": "Contact Us",
+  "refundPolicy": "Refund Policy",
+  "termsOfPurchase": "Terms of Purchase",
+  "year": "Year {{year}}"
+}

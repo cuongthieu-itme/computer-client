@@ -1,0 +1,16 @@
+{
+  "login": "Log Masuk",
+  "logout": "Log Keluar",
+  "register": "Daftar",
+  "myAccount": "Akaun Saya",
+  "language": "Bahasa",
+  "email": "E-mel",
+  "password": "Kata Laluan",
+  "termsOfService": "Syarat Perkhidmatan",
+  "privacyPolicy": "Dasar Privasi",
+  "faq": "Soalan Lazim",
+  "contactUs": "Hubungi Kami",
+  "refundPolicy": "Dasar Bayaran Balik",
+  "termsOfPurchase": "Syarat Pembelian",
+  "year": "Tahun {{year}}"
+}

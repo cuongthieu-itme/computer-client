@@ -1,0 +1,285 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Base Theme - Type A (Default) */
+  :root,
+  [data-design-theme="typeA"] {
+    --background: 222 30% 97%; /* #F0F4FA - Light blue-tinted background */
+    --foreground: 222 15% 20%; /* #2A3042 - Dark blue-grey text */
+
+    --card: 222 30% 97%; /* #F0F4FA - Same as background */
+    --card-foreground: 222 15% 20%; /* #2A3042 - Same as foreground */
+
+    --popover: 222 30% 97%; /* #F0F4FA - Same as background */
+    --popover-foreground: 222 15% 20%; /* #2A3042 - Same as foreground */
+
+    --primary: 222 100% 25%; /* #002B7F - Navy blue primary */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF - White text on primary */
+
+    --secondary: 35 80% 52%; /* #F8B929 - Gold/yellow secondary (not green) */
+    --secondary-foreground: 0 0% 100%; /* #FFFFFF - White text on secondary */
+
+    --muted: 222 15% 90%; /* #E1E5EE - Very light blue-grey */
+    --muted-foreground: 222 15% 40%; /* #566080 - Medium blue-grey text */
+
+    --accent: 351 84% 44%; /* #CE1126 - Red accent */
+    --accent-foreground: 0 0% 100%; /* #FFFFFF - White text on accent */
+
+    --destructive: 0 84.2% 60.2%; /* #E93B3B - Bright red */
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF - White text on destructive */
+
+    --border: 222 15% 85%; /* #CED3E3 - Light blue-grey border */
+    --input: 222 15% 85%; /* #CED3E3 - Same as border */
+    --ring: 222 100% 25%; /* #002B7F - Same as primary */
+
+    --radius: 0.75rem;
+    /* --background: 48 33% 93%; 
+    --foreground: 60 15% 25%; 
+
+    --card: 48 33% 93%;
+    --card-foreground: 60 15% 25%;
+
+    --popover: 48 33% 93%;
+    --popover-foreground: 60 15% 25%;
+
+    --primary: 58 20% 52%; 
+    --primary-foreground: 48 33% 93%;
+
+    --secondary: 351 84% 44%; 
+    --secondary-foreground: 48 33% 93%;
+
+    --muted: 60 15% 85%;
+    --muted-foreground: 60 15% 40%;
+
+    --accent: 222 100% 25%; 
+    --accent-foreground: 48 33% 93%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 48 33% 93%;
+
+    --border: 60 15% 80%;
+    --input: 60 15% 80%;
+    --ring: 58 20% 52%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 60 15% 90%;
+    --sidebar-foreground: 60 15% 25%;
+    --sidebar-primary: 58 20% 52%;
+    --sidebar-primary-foreground: 48 33% 93%;
+    --sidebar-accent: 60 15% 80%;
+    --sidebar-accent-foreground: 60 15% 25%;
+    --sidebar-border: 60 15% 80%;
+    --sidebar-ring: 58 20% 52%; */
+  }
+
+  /* Type B Theme - Vibrant Jungle with Red Emphasis */
+  [data-design-theme="typeB"] {
+    /* --background: 60 30% 94%; 
+    --foreground: 83 15% 25%; 
+
+    --card: 60 30% 94%;
+    --card-foreground: 83 15% 25%;
+
+    --popover: 60 30% 94%;
+    --popover-foreground: 83 15% 25%;
+
+    --primary: 82 24% 41%; 
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 351 84% 44%; 
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 82 15% 90%;
+    --muted-foreground: 83 15% 40%;
+
+    --accent: 343 81% 64%; 
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 82 15% 85%;
+    --input: 82 15% 85%;
+    --ring: 351 84% 44%;  */
+  }
+
+  /* Type C Theme - Navy Blue Dominant */
+  [data-design-theme="typeC"] {
+    --background: 222 30% 97%; /* #F0F4FA - Light blue-tinted background */
+    --foreground: 222 15% 20%; /* #2A3042 - Dark blue-grey text */
+
+    --card: 222 30% 97%; /* #F0F4FA - Same as background */
+    --card-foreground: 222 15% 20%; /* #2A3042 - Same as foreground */
+
+    --popover: 222 30% 97%; /* #F0F4FA - Same as background */
+    --popover-foreground: 222 15% 20%; /* #2A3042 - Same as foreground */
+
+    --primary: 222 100% 25%; /* #002B7F - Navy blue primary */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF - White text on primary */
+
+    --secondary: 35 80% 52%; /* #F8B929 - Gold/yellow secondary (not green) */
+    --secondary-foreground: 0 0% 100%; /* #FFFFFF - White text on secondary */
+
+    --muted: 222 15% 90%; /* #E1E5EE - Very light blue-grey */
+    --muted-foreground: 222 15% 40%; /* #566080 - Medium blue-grey text */
+
+    --accent: 351 84% 44%; /* #CE1126 - Red accent */
+    --accent-foreground: 0 0% 100%; /* #FFFFFF - White text on accent */
+
+    --destructive: 0 84.2% 60.2%; /* #E93B3B - Bright red */
+    --destructive-foreground: 0 0% 100%; /* #FFFFFF - White text on destructive */
+
+    --border: 222 15% 85%; /* #CED3E3 - Light blue-grey border */
+    --input: 222 15% 85%; /* #CED3E3 - Same as border */
+    --ring: 222 100% 25%; /* #002B7F - Same as primary */
+
+    --radius: 0.75rem;
+
+    /* --sidebar-background: 60 15% 90%;
+    --sidebar-foreground: 60 15% 25%;
+    --sidebar-primary: 58 20% 52%;
+    --sidebar-primary-foreground: 48 33% 93%;
+    --sidebar-accent: 60 15% 80%;
+    --sidebar-accent-foreground: 60 15% 25%;
+    --sidebar-border: 60 15% 80%;
+    --sidebar-ring: 58 20% 52%; */
+  }
+
+  .dark {
+    --background: 60 15% 10%;
+    --foreground: 48 33% 90%;
+
+    --card: 60 15% 12%;
+    --card-foreground: 48 33% 90%;
+
+    --popover: 60 15% 12%;
+    --popover-foreground: 48 33% 90%;
+
+    --primary: 58 20% 52%;
+    --primary-foreground: 60 15% 10%;
+
+    --secondary: 351 84% 44%;
+    --secondary-foreground: 60 15% 10%;
+
+    --muted: 60 15% 20%;
+    --muted-foreground: 60 15% 60%;
+
+    --accent: 222 100% 25%;
+    --accent-foreground: 48 33% 90%;
+
+    --destructive: 0 62.8% 40.6%;
+    --destructive-foreground: 48 33% 90%;
+
+    --border: 60 15% 25%;
+    --input: 60 15% 25%;
+    --ring: 58 20% 52%;
+
+    --sidebar-background: 60 15% 12%;
+    --sidebar-foreground: 48 33% 90%;
+    --sidebar-primary: 58 20% 52%;
+    --sidebar-primary-foreground: 60 15% 10%;
+    --sidebar-accent: 60 15% 20%;
+    --sidebar-accent-foreground: 48 33% 90%;
+    --sidebar-border: 60 15% 25%;
+    --sidebar-ring: 58 20% 52%;
+
+    /* Add custom background opacity for dark mode */
+    --tw-bg-opacity-white: 0.1;
+  }
+
+  /* Dark Mode Type B Theme - Vibrant Jungle with Red Emphasis Dark Mode */
+  .dark[data-design-theme="typeB"] {
+    --background: 82 30% 15%;
+    --foreground: 60 15% 90%;
+
+    --card: 82 30% 17%;
+    --card-foreground: 60 15% 90%;
+
+    --popover: 82 30% 17%;
+    --popover-foreground: 60 15% 90%;
+
+    --primary: 82 24% 41%; /* #7A8450 - darker for dark mode */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 351 70% 44%; /* #CE1126 - adjusted for dark mode */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 82 15% 25%;
+    --muted-foreground: 82 15% 65%;
+
+    --accent: 343 70% 55%; /* #EC4E7B - adjusted for dark mode */
+    --accent-foreground: 0 0% 100%;
+
+    --border: 82 15% 30%;
+    --input: 82 15% 30%;
+    --ring: 351 70% 44%;
+  }
+
+  /* Dark Mode Type C Theme - Navy Blue Dominant */
+  .dark[data-design-theme="typeC"] {
+    --background: 222 30% 10%;
+    --foreground: 222 15% 90%;
+
+    --card: 222 30% 12%;
+    --card-foreground: 222 15% 90%;
+
+    --popover: 222 30% 12%;
+    --popover-foreground: 222 15% 90%;
+
+    --primary: 222 80% 35%;
+    --primary-foreground: 222 15% 10%;
+
+    --secondary: 58 15% 45%;
+    --secondary-foreground: 222 15% 10%;
+
+    --muted: 222 15% 25%;
+    --muted-foreground: 222 15% 65%;
+
+    --accent: 351 70% 50%;
+    --accent-foreground: 222 15% 90%;
+
+    --border: 222 15% 30%;
+    --input: 222 15% 30%;
+    --ring: 222 80% 35%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Inter", sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight;
+  }
+
+  h1 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl;
+  }
+
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl;
+  }
+}
+
+/* Override the bg-white class in dark mode to use 10% opacity */
+.dark .bg-white {
+  --tw-bg-opacity: 0.1;
+}

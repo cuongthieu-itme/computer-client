@@ -1,0 +1,13 @@
+{
+  "title": "访问您的帐户",
+  "description.login": "登录以管理您的预订并享受会员权益。",
+  "description.register": "创建一个帐户开始您的票务旅程。",
+  "tabs.login": "登录",
+  "tabs.register": "注册",
+  "nonMemberInquiry.button": "非会员订单查询",
+  "nonMemberInquiry.description": "无需帐户即可检查您的订单",
+  "footer.agreementPart1": "创建帐户或登录即表示您同意我们的",
+  "footer.agreementPart2": "和",
+  "footer.agreementPart3": "。",
+  "footer.backToHome": "返回首页"
+}
