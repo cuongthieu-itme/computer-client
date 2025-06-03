@@ -1,39 +1,28 @@
-import { motion, AnimatePresence } from "framer-motion";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import TicketDisplaySection from "@/components/TicketDisplaySection";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Input } from "@/components/ui/input";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/contexts/LanguageContext";
 import Autoplay from "embla-carousel-autoplay";
-import React, { useState, useEffect, useRef } from "react";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  Ticket,
-  SlidersHorizontal,
-  QrCode,
-  BadgePercent,
-  Info,
-  Search,
-  HelpCircle,
-  ShieldCheck,
-  Clock,
   BadgeCheck,
   ChevronDown,
-  Bus,
-  Calendar as CalendarIcon,
-  Image as ImageIcon,
-  MoreHorizontal,
-  Tag,
+  Clock,
+  HelpCircle,
+  Info,
+  Search,
+  ShieldCheck
 } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { useEffect, useRef, useState } from "react";
 
-import { useQuery } from "@tanstack/react-query";
+import ContactUsTrigger from "@/components/documents/ContactUsTrigger";
+import { cn } from "@/lib/utils";
 import { fetchAllTicketGroups } from "@/services/ticketService";
 import { FetchTicketGroupsResponseDTO, TicketGroupDTO } from "@/types/api/ticket.api";
-import { cn } from "@/lib/utils";
-import ContactUsTrigger from "@/components/documents/ContactUsTrigger";
+import { useQuery } from "@tanstack/react-query";
 
 const Index = () => {
   const { t } = useLanguage();
@@ -170,21 +159,21 @@ const Index = () => {
               <div className="flex flex-col items-center text-center mb-6 sm:mb-8">
                 <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium mb-3 sm:mb-4">
                   <span className="mr-1.5 ">✦</span>
-                  <span className="font-bold text-base sm:text-lg">{t("pages.Index.welcome.badge.officialPlatform")}</span>
+                  <span className="font-bold text-base sm:text-lg">Nền tảng chính thức</span>
                   <span className="ml-1.5">✦</span>
                 </div>
                 <span className="mx-5 text-3xl sm:text-4xl md:text-5xl font-bold my-3 sm:my-4 bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary p-1">
-                  {t("pages.Index.welcome.mainHeading")}
+                  Computer Store
                 </span>
               </div>
               <div className="relative bg-card rounded-xl p-4 sm:p-6 md:p-8 shadow-lg border">
                 <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                   <div className="bg-background px-3 sm:px-4 py-1.5 rounded-full border shadow-sm">
-                    <span className="text-primary font-bold text-sm sm:text-base whitespace-nowrap">{t("pages.Index.welcome.greeting")}</span>
+                    <span className="text-primary font-bold text-sm sm:text-base whitespace-nowrap">Xin chào</span>
                   </div>
                 </div>
                 <p className="text-sm sm:text-base mt-4 mb-6 text-card-foreground leading-relaxed">
-                  {t("pages.Index.welcome.description")}
+                  Chào mừng bạn đến với Computer Store – nơi mà đam mê công nghệ gặp gỡ sự tin cậy và chất lượng. Tại đây, chúng tôi không chỉ cung cấp đa dạng các sản phẩm máy tính, linh kiện, phụ kiện và thiết bị công nghệ hiện đại nhất, mà còn cam kết mang đến cho bạn trải nghiệm mua sắm hoàn hảo với dịch vụ tư vấn chuyên nghiệp, hỗ trợ tận tình và giá cả cạnh tranh nhất trên thị trường. Cho dù bạn là người mới bắt đầu hay một chuyên gia công nghệ, Computer Store luôn đồng hành cùng bạn để đáp ứng mọi nhu cầu, giúp bạn khám phá những giải pháp tối ưu và nâng tầm trải nghiệm số của mình. Hãy để Computer Store trở thành điểm đến tin cậy cho mọi lựa chọn công nghệ của bạn!
                 </p>
 
                 <div className="">
@@ -197,7 +186,7 @@ const Index = () => {
                   >
                     <div className="flex items-center ">
                       <Info className="h-4 w-4 mr-2" />
-                      <span>{t("pages.Index.welcome.collapsible.platformFeatures")}</span>
+                      <span>Đặc điểm của nền tảng</span>
                     </div>
                     <motion.div animate={{ rotate: isInfoOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
                       <ChevronDown className="h-4 w-4" />
@@ -215,21 +204,21 @@ const Index = () => {
                         <div className="mt-3 sm:mt-4 bg-background/50 p-4 sm:p-6 rounded-lg border">
                           <div className="space-y-3 sm:space-y-4 text-sm">
                             <p>
-                              {t("pages.Index.welcome.collapsible.infoParagraph1")}
+                              Computer Store cung cấp đa dạng các sản phẩm máy tính, linh kiện, phụ kiện và thiết bị công nghệ hiện đại nhất, từ các sản phẩm chính hãng đến các sản phẩm độc quyền. Chúng tôi cam kết mang đến cho khách hàng trải nghiệm mua sắm hoàn hảo với giá cả cạnh tranh nhất trên thị trường, đồng thời đảm bảo chất lượng sản phẩm và dịch vụ tư vấn chuyên nghiệp. Với Computer Store, bạn sẽ tìm thấy những giải pháp tối ưu và nâng tầm trải nghiệm số của mình, từ các sản phẩm máy tính, linh kiện, phụ kiện và thiết bị công nghệ hiện đại nhất, đến các sản phẩm độc quyền và các sản phẩm chính hãng. Computer Store cam kết mang đến cho khách hàng trải nghiệm mua sắm hoàn hảo với giá cả cạnh tranh nhất trên thị trường, đồng thời đảm bảo chất lượng sản phẩm và dịch vụ tư vấn chuyên nghiệp.
                             </p>
                             <p>
-                              {t("pages.Index.welcome.collapsible.infoParagraph2")}
+                              Computer Store cam kết mang đến cho khách hàng trải nghiệm mua sắm hoàn hảo với giá cả cạnh tranh nhất trên thị trường, đồng thời đảm bảo chất lượng sản phẩm và dịch vụ tư vấn chuyên nghiệp.
                             </p>
                             <div className="flex flex-col sm:flex-row justify-center gap-3 pt-1">
                               <Button className="gap-2" size="sm" onClick={handleScrollToTickets}>
                                 <Search className="h-4 w-4" />
-                                {t("pages.Index.welcome.collapsible.exploreTicketsButton")}
+                                Xem sản phẩm
                               </Button>
 
                               <ContactUsTrigger className="w-auto">
                                 <Button variant="outline" className="gap-2 w-full sm:w-auto" size="sm">
                                   <HelpCircle className="h-4 w-4 " />
-                                  {t("pages.Index.welcome.collapsible.contactUsButton")}
+                                  Liên hệ
                                 </Button>
                               </ContactUsTrigger>
                             </div>
@@ -243,15 +232,15 @@ const Index = () => {
               <div className="flex flex-wrap justify-center gap-4 sm:gap-6 mt-6 sm:mt-8 text-xs sm:text-sm text-muted-foreground">
                 <div className="flex items-center">
                   <ShieldCheck className="h-4 w-4 mr-1.5 text-primary" />
-                  {t("pages.Index.welcome.features.securePayment")}
+                  An toàn
                 </div>
                 <div className="flex items-center">
                   <Clock className="h-4 w-4 mr-1.5 text-primary" />
-                  {t("pages.Index.welcome.features.customerSupport")}
+                  Hỗ trợ
                 </div>
                 <div className="flex items-center">
                   <BadgeCheck className="h-4 w-4 mr-1.5 text-primary" />
-                  {t("pages.Index.welcome.features.officialPortal")}
+                  Chính thức
                 </div>
               </div>
             </div>
@@ -260,9 +249,8 @@ const Index = () => {
       </section>
 
       <div
-        className={`sticky top-[76px] md:top-[88px] z-20 bg-background/95 backdrop-blur-sm ${
-          isScrolled ? "py-3 sm:py-3 shadow-md" : "py-3 sm:py-3 shadow-sm"
-        } transition-all duration-200 border-b`}
+        className={`sticky top-[76px] md:top-[88px] z-20 bg-background/95 backdrop-blur-sm ${isScrolled ? "py-3 sm:py-3 shadow-md" : "py-3 sm:py-3 shadow-sm"
+          } transition-all duration-200 border-b`}
       >
         <div className="container mx-auto px-4">
           <div className="relative max-w-xl mx-auto flex items-center gap-2">
@@ -270,48 +258,11 @@ const Index = () => {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="text"
-                aria-label={t("pages.Index.search.ariaLabel")}
-                placeholder={t("pages.Index.search.placeholder")}
+                aria-label="Tìm kiếm sản phẩm"
+                placeholder="Tìm kiếm sản phẩm"
                 className="pl-10 pr-3 w-full shadow-sm h-10 text-sm"
               />
             </div>
-            {/* Filter Popover - keeping it commented out as per original, can be localized if re-enabled
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" size="icon" className="h-10 w-10" aria-label={t("pages.Index.filter.openFilters")}>
-                  <SlidersHorizontal className="h-4 w-4" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-72 sm:w-80 p-0" align="end">
-                <div className="p-3 sm:p-4 border-b">
-                  <h4 className="font-medium text-sm sm:text-base">{t("pages.Index.filter.title")}</h4>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{t("pages.Index.filter.subtitle")}</p>
-                </div>
-                <div className="p-2 max-h-[250px] sm:max-h-[300px] overflow-y-auto">
-                  <div className="grid grid-cols-2 gap-2">
-                    {categories.map((category, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col items-center p-2 sm:p-3 rounded-lg border hover:bg-accent/10 hover:border-accent cursor-pointer transition-colors"
-                      >
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-primary/10 flex items-center justify-center mb-1 sm:mb-2">
-                          <LucideIcon name={category.iconName} className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-primary" />
-                        </div>
-                        <span className="text-xs sm:text-sm font-medium text-center">{category.name}</span>
-                        <span className="text-xs text-muted-foreground">{category.count}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="p-3 sm:p-4 border-t flex justify-between">
-                  <Button variant="ghost" size="sm">
-                    {t("pages.Index.filter.clearButton")}
-                  </Button>
-                  <Button size="sm">{t("pages.Index.filter.applyButton")}</Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-            */}
           </div>
         </div>
       </div>
@@ -321,8 +272,8 @@ const Index = () => {
           <div className="grid grid-cols-12 gap-4 sm:gap-6">
             <div className="col-span-12">
               <div className="mb-6 sm:mb-8 text-center md:text-left">
-                <h2 className="text-2xl sm:text-3xl font-bold">{t("pages.Index.ticketDisplay.heading")}</h2>
-                <p className="text-muted-foreground text-sm sm:text-base">{t("pages.Index.ticketDisplay.subheading")}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold">Sản phẩm</h2>
+                <p className="text-muted-foreground text-sm sm:text-base">Tại đây</p>
               </div>
               <div className="md:border md:border-border/50 md:p-4 md:rounded-lg md:bg-card md:shadow-sm">
                 <TicketDisplaySection ticketGroups={ticketGroups} isLoading={isLoadingTicketGroups} error={displayError} />
