@@ -1,27 +1,22 @@
-// src/components/auth/RegisterForm.tsx
-import { useState } from "react";
-import { Link } from "react-router-dom"; // Keep for Terms/Privacy links
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react"; // Added Loader2
-import { useLanguage } from "@/contexts/LanguageContext";
 import apiClient from "@/lib/apiClient";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosError } from "axios";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import * as z from "zod";
 import PrivacyPolicyTrigger from "../documents/PrivacyPolicyTrigger";
-import TermsOfPurchaseTrigger from "../documents/TermsOfPurchaseTrigger";
 import TermsOfServiceTrigger from "../documents/TermsOfServiceTrigger";
 
 interface CustomerCreateSuccessResponseDTO {
   respCode: number;
   respDesc: string;
   result?: {
-    // Assuming the success result might contain some user info, though not strictly needed by the form after success
     contactNo?: string;
     createdAt?: string;
     custId?: string;
@@ -32,43 +27,40 @@ interface CustomerCreateSuccessResponseDTO {
   } | null;
 }
 
-// Assuming a generic error DTO structure
 interface ApiErrorDTO {
   respCode: number;
   respDesc: string;
-  message?: string; // Optional, for more generic errors
-  errors?: Array<{ field: string; message: string }>; // Optional, for field-specific errors
+  message?: string;
+  errors?: Array<{ field: string; message: string }>;
 }
 
-// Define the Zod schema for direct registration
 const directRegisterSchema = z
   .object({
-    email: z.string().email({ message: "Alamat emel tidak sah" }), // Translated
-    password: z.string().min(6, { message: "Kata laluan mesti sekurang-kurangnya 6 aksara" }), // Translated
+    email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
+    password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
     confirmPassword: z.string(),
-    identificationNo: z.string().min(1, { message: "Nombor pengenalan diperlukan" }), // Translated
-    fullName: z.string().min(1, { message: "Nama penuh diperlukan" }), // Translated
+    identificationNo: z.string().min(1, { message: "Cần nhập số CMND/CCCD hoặc hộ chiếu" }),
+    fullName: z.string().min(1, { message: "Cần nhập họ tên đầy đủ" }),
     contactNo: z
       .string()
-      .min(10, { message: "Nombor telefon mesti sekurang-kurangnya 10 digit" }) // Translated
-      .regex(/^(\+?6?01)[0-9]{7,9}$/, { message: "Format nombor telefon bimbit Malaysia tidak sah (cth., +60123456789 atau 0123456789)" }), // Translated
+      .min(10, { message: "Số điện thoại phải có ít nhất 10 chữ số" })
+      .regex(/^(\+?84|0)[0-9]{9,10}$/, { message: "Định dạng số điện thoại Việt Nam không hợp lệ (ví dụ: +84912345678 hoặc 0912345678)" }),
     agreedToTerms: z.boolean().refine((val) => val === true, {
-      message: "Anda mesti bersetuju dengan Syarat Perkhidmatan dan Dasar Privasi.", // Translated
+      message: "Bạn phải đồng ý với Điều khoản dịch vụ và Chính sách bảo mật.",
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Kata laluan tidak sepadan", // Translated
-    path: ["confirmPassword"], // Apply error to confirmPassword field
+    message: "Mật khẩu không khớp",
+    path: ["confirmPassword"],
   });
 
 type DirectRegisterFormValues = z.infer<typeof directRegisterSchema>;
 
 interface RegisterFormProps {
-  onRegistrationSuccess: () => void; // Callback to AuthPage to switch tab
+  onRegistrationSuccess: () => void;
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) => {
-  const { t } = useLanguage(); // For internationalization
   const { toast } = useToast();
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -78,13 +70,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
   const {
     register,
     handleSubmit,
-    control, // For Controller component (Checkbox)
+    control,
     formState: { errors },
-    reset, // To clear the form on success
+    reset,
   } = useForm<DirectRegisterFormValues>({
     resolver: zodResolver(directRegisterSchema),
     defaultValues: {
-      // Set default values for the form fields
       email: "",
       password: "",
       confirmPassword: "",
@@ -95,11 +86,9 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
     },
   });
 
-  // Handle form submission
   const onSubmit: SubmitHandler<DirectRegisterFormValues> = async (data) => {
     setIsSubmitting(true);
 
-    // Construct the payload for the API
     const registrationPayload = {
       email: data.email,
       password: data.password,
@@ -109,46 +98,41 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
     };
 
     try {
-      // API Endpoint: POST - {{base_url}}/auth/customer/create
       const response = await apiClient.post<CustomerCreateSuccessResponseDTO>("/auth/customer/create", registrationPayload);
 
       if (response.data && response.data.respCode === 2000) {
         toast({
-          title: "Pendaftaran Berjaya!", // Translated
-          description: "Akaun anda telah dicipta. Sila log masuk untuk meneruskan.", // Translated
+          title: "Đăng ký thành công!",
+          description: "Tài khoản của bạn đã được tạo. Vui lòng đăng nhập để tiếp tục.",
         });
         reset(); // Clear the form fields
         onRegistrationSuccess(); // Callback to AuthPage (e.g., switch to login tab)
       } else {
         // Handle known API errors (e.g., email exists, validation errors from backend)
         toast({
-          title: "Pendaftaran Gagal", // Translated
-          description: response.data.respDesc || "Tidak dapat mencipta akaun anda. Sila cuba lagi.", // Translated
+          title: "Đăng ký thất bại",
+          description: response.data.respDesc || "Không thể tạo tài khoản của bạn. Vui lòng thử lại.",
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error("Registration API error:", error);
-      let errorMessage = "Ralat tidak dijangka berlaku. Sila cuba lagi."; // Translated
+      let errorMessage = "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.";
 
       if (error instanceof AxiosError) {
-        const axiosError = error as AxiosError<ApiErrorDTO>; // Type assertion
-        // Check for specific error code for existing email
+        const axiosError = error as AxiosError<ApiErrorDTO>;
         if (axiosError.response && axiosError.response.data && axiosError.response.data.respCode === 4009) {
-          errorMessage = axiosError.response.data.respDesc || "Pelanggan dengan emel ini sudah wujud"; // Translated
+          errorMessage = axiosError.response.data.respDesc || "Khách hàng với email này đã tồn tại";
         } else if (axiosError.response && axiosError.response.data) {
-          // Use backend's description if available
           errorMessage = axiosError.response.data.respDesc || errorMessage;
         } else if (axiosError.request) {
-          // Network error or no response from server
-          errorMessage = "Tiada respons daripada pelayan. Sila semak sambungan anda."; // Translated
+          errorMessage = "Không có phản hồi từ máy chủ. Vui lòng kiểm tra kết nối của bạn.";
         } else {
-          // Other Axios errors
           errorMessage = axiosError.message;
         }
       }
       toast({
-        title: "Pendaftaran Gagal", // Translated
+        title: "Đăng ký thất bại",
         description: errorMessage,
         variant: "destructive",
       });
@@ -157,19 +141,17 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
     }
   };
 
-  // Toggle password visibility functions
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   const toggleConfirmPasswordVisibility = () => setShowConfirmPassword(!showConfirmPassword);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-      {/* Email Field */}
       <div className="space-y-1">
-        <Label htmlFor="register-email">Emel</Label> {/* Translated */}
+        <Label htmlFor="register-email">Email</Label>
         <Input
           id="register-email"
           type="email"
-          placeholder="emel.anda@contoh.com" // Translated
+          placeholder="email.ban@example.com"
           {...register("email")}
           className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
           aria-invalid={errors.email ? "true" : "false"}
@@ -181,12 +163,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         )}
       </div>
 
-      {/* Full Name Field */}
       <div className="space-y-1">
-        <Label htmlFor="register-fullName">Nama Penuh</Label> {/* Translated */}
+        <Label htmlFor="register-fullName">Họ tên đầy đủ</Label>
         <Input
           id="register-fullName"
-          placeholder="Masukkan nama penuh anda" // Translated
+          placeholder="Nhập họ tên đầy đủ của bạn"
           {...register("fullName")}
           className={errors.fullName ? "border-destructive focus-visible:ring-destructive" : ""}
           aria-invalid={errors.fullName ? "true" : "false"}
@@ -198,29 +179,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         )}
       </div>
 
-      {/* Identification Number Field */}
       <div className="space-y-1">
-        <Label htmlFor="register-identificationNo">No. KP / Pasport</Label> {/* Translated */}
-        <Input
-          id="register-identificationNo"
-          placeholder="Masukkan No. KP atau Pasport anda" // Translated
-          {...register("identificationNo")}
-          className={errors.identificationNo ? "border-destructive focus-visible:ring-destructive" : ""}
-          aria-invalid={errors.identificationNo ? "true" : "false"}
-        />
-        {errors.identificationNo && (
-          <p className="text-xs text-destructive pt-1" role="alert">
-            {errors.identificationNo.message}
-          </p>
-        )}
-      </div>
-
-      {/* Contact Number Field */}
-      <div className="space-y-1">
-        <Label htmlFor="register-contactNo">Nombor Telefon</Label> {/* Translated */}
+        <Label htmlFor="register-contactNo">Số điện thoại</Label>
         <Input
           id="register-contactNo"
-          placeholder="+60123456789"
+          placeholder="+84912345678 hoặc 0912345678"
           {...register("contactNo")}
           className={errors.contactNo ? "border-destructive focus-visible:ring-destructive" : ""}
           aria-invalid={errors.contactNo ? "true" : "false"}
@@ -232,14 +195,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         )}
       </div>
 
-      {/* Password Field */}
       <div className="space-y-1">
-        <Label htmlFor="register-password">Kata Laluan</Label> {/* Translated */}
+        <Label htmlFor="register-password">Mật khẩu</Label>
         <div className="relative">
           <Input
             id="register-password"
             type={showPassword ? "text" : "password"}
-            placeholder="Cipta kata laluan" // Translated
+            placeholder="Tạo mật khẩu"
             {...register("password")}
             className={errors.password ? "border-destructive focus-visible:ring-destructive" : ""}
             aria-invalid={errors.password ? "true" : "false"}
@@ -250,10 +212,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
             size="icon"
             className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-primary"
             onClick={togglePasswordVisibility}
-            aria-label={showPassword ? "Sembunyikan kata laluan" : "Tunjukkan kata laluan"}
+            aria-label={showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
           >
-            {" "}
-            {/* Translated */}
             {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </Button>
         </div>
@@ -264,14 +224,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         )}
       </div>
 
-      {/* Confirm Password Field */}
       <div className="space-y-1">
-        <Label htmlFor="register-confirm-password">Sahkan Kata Laluan</Label> {/* Translated */}
+        <Label htmlFor="register-confirm-password">Xác nhận mật khẩu</Label>
         <div className="relative">
           <Input
             id="register-confirm-password"
             type={showConfirmPassword ? "text" : "password"}
-            placeholder="Sahkan kata laluan anda" // Translated
+            placeholder="Xác nhận mật khẩu của bạn"
             {...register("confirmPassword")}
             className={errors.confirmPassword ? "border-destructive focus-visible:ring-destructive" : ""}
             aria-invalid={errors.confirmPassword ? "true" : "false"}
@@ -282,10 +241,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
             size="icon"
             className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-primary"
             onClick={toggleConfirmPasswordVisibility}
-            aria-label={showConfirmPassword ? "Sembunyikan kata laluan" : "Tunjukkan kata laluan"}
+            aria-label={showConfirmPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
           >
-            {" "}
-            {/* Translated */}
             {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
           </Button>
         </div>
@@ -296,14 +253,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         )}
       </div>
 
-      {/* Terms Agreement Checkbox */}
       <div className="flex items-start space-x-2 pt-2">
         <Controller
           name="agreedToTerms"
           control={control}
           render={({ field }) => (
             <Checkbox
-              id="terms-direct" // Ensure unique ID if multiple forms exist on a page, though unlikely here
+              id="terms-direct"
               checked={field.value}
               onCheckedChange={field.onChange}
               className={errors.agreedToTerms ? "border-destructive focus-visible:ring-destructive" : ""}
@@ -313,13 +269,13 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="terms-direct" className="text-sm font-normal cursor-pointer">
-            Saya bersetuju dengan {/* Translated */}
+            Tôi đồng ý với
             <TermsOfServiceTrigger>
-              <span className="text-primary hover:underline">Syarat Perkhidmatan</span>
+              <span className="text-primary hover:underline">Điều khoản dịch vụ</span>
             </TermsOfServiceTrigger>
-            <span className="pl-1">dan</span> {/* Translated */}
+            <span className="pl-1">và</span>
             <PrivacyPolicyTrigger>
-              <span className="text-primary hover:underline">Dasar Privasi</span>
+              <span className="text-primary hover:underline">Chính sách bảo mật</span>
             </PrivacyPolicyTrigger>
           </Label>
           {errors.agreedToTerms && (
@@ -330,15 +286,14 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegistrationSuccess }) =>
         </div>
       </div>
 
-      {/* Submit Button */}
       <Button type="submit" className="w-full" disabled={isSubmitting}>
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Mencipta Akaun... {/* Translated */}
+            Đang tạo tài khoản...
           </>
         ) : (
-          "Cipta Akaun" // Translated
+          "Đăng ký"
         )}
       </Button>
     </form>

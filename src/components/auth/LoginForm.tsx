@@ -1,21 +1,4 @@
-// src/components/auth/LoginForm.tsx
-import { useState } from "react";
-// Link is not used directly for forgot password anymore, it will be a button to open dialog
-// import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useToast } from "@/components/ui/use-toast";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { Eye, EyeOff, Loader2 } from "lucide-react"; // Added Loader2
-import { useLanguage } from "@/contexts/LanguageContext";
-import { AxiosError } from "axios";
-
-import apiClient from "@/lib/apiClient";
-import { LoginRequestDTO, LoginResponseDTO, ApiErrorDTO, UserDTO } from "@/types/api/auth.api";
-
 import {
   Dialog,
   DialogContent,
@@ -23,37 +6,44 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-  DialogClose, // To close dialog programmatically if needed or via X button
+  DialogTrigger
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import apiClient from "@/lib/apiClient";
+import { ApiErrorDTO, LoginRequestDTO, LoginResponseDTO, UserDTO } from "@/types/api/auth.api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as z from "zod";
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Alamat emel tidak sah" }),
-  password: z.string().min(6, { message: "Kata laluan mesti sekurang-kurangnya 6 aksara" }),
+  email: z.string().email({ message: "Địa chỉ email không hợp lệ" }),
+  password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 });
 type LoginFormValues = z.infer<typeof loginSchema>;
 
-// Schema for reset password email
 const resetPasswordEmailSchema = z.object({
-  resetEmail: z.string().email({ message: "Sila masukkan alamat emel yang sah." }),
+  resetEmail: z.string().email({ message: "Vui lòng nhập địa chỉ email hợp lệ." }),
 });
 type ResetPasswordEmailValues = z.infer<typeof resetPasswordEmailSchema>;
 
 interface ResetPasswordResponseDTO {
   respCode: number;
   respDesc: string;
-  result?: { // Result might not always be present on error
+  result?: {
     status: boolean;
   };
 }
-
 
 interface LoginFormProps {
   onLoginSuccess: (userData: UserDTO, accessToken: string, refreshToken: string) => void;
 }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
-  const { t } = useLanguage(); // Assuming t() will be used elsewhere or with a different setup
   const { toast } = useToast();
 
   const [isSubmittingLogin, setIsSubmittingLogin] = useState(false);
@@ -99,33 +89,33 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
       if (response.data && response.data.respCode === 2000 && response.data.result) {
         const { accessToken, refreshToken, user } = response.data.result;
         toast({
-          title: "Log Masuk Berjaya",
-          description: `Selamat kembali, ${user.fullName || user.email}!`,
+          title: "Đăng nhập thành công",
+          description: `Chào mừng trở lại, ${user.fullName || user.email}!`,
         });
         onLoginSuccess(user, accessToken, refreshToken);
         resetLogin();
       } else {
         toast({
-          title: "Log Masuk Gagal",
-          description: response.data.respDesc || "Butiran tidak sah atau respons tidak dijangka.",
+          title: "Đăng nhập thất bại",
+          description: response.data.respDesc || "Thông tin không hợp lệ hoặc phản hồi không như mong đợi.",
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error("Login API error:", error);
-      let errorMessage = "Ralat tidak dijangka berlaku. Sila cuba lagi.";
+      let errorMessage = "Đã xảy ra lỗi không mong muốn. Vui lòng thử lại.";
       if (error instanceof AxiosError) {
         const axiosError = error as AxiosError<ApiErrorDTO>;
         if (axiosError.response && axiosError.response.data) {
           errorMessage = axiosError.response.data.respDesc || axiosError.response.data.message || errorMessage;
         } else if (axiosError.request) {
-          errorMessage = "Tiada respons daripada pelayan. Sila semak sambungan anda atau titik akhir API.";
+          errorMessage = "Không có phản hồi từ máy chủ. Vui lòng kiểm tra kết nối của bạn hoặc điểm cuối API.";
         } else {
           errorMessage = axiosError.message;
         }
       }
       toast({
-        title: "Log Masuk Gagal",
+        title: "Đăng nhập thất bại",
         description: errorMessage,
         variant: "destructive",
       });
@@ -143,21 +133,21 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
 
       if (response.data && response.data.respCode === 2000 && response.data.result?.status) {
         toast({
-          title: "Emel untuk Tetapan Semula Telah Dihantar",
-          description: "Jika emel tersebut wujud dalam sistem kami, pautan untuk menetapkan semula kata laluan akan dihantar.",
+          title: "Email đặt lại mật khẩu đã được gửi",
+          description: "Nếu email tồn tại trong hệ thống của chúng tôi, liên kết đặt lại mật khẩu sẽ được gửi đến.",
         });
         resetEmailForm();
-        setIsResetPasswordDialogOpen(false); // Close dialog on success
+        setIsResetPasswordDialogOpen(false);
       } else {
         toast({
-          title: "Permintaan Gagal",
-          description: response.data.respDesc || "Tidak dapat memproses permintaan anda. Sila cuba lagi.",
+          title: "Yêu cầu thất bại",
+          description: response.data.respDesc || "Không thể xử lý yêu cầu của bạn. Vui lòng thử lại.",
           variant: "destructive",
         });
       }
     } catch (error) {
       console.error("Reset password API error:", error);
-      let errorMessage = "Ralat tidak dijangka berlaku.";
+      let errorMessage = "Đã xảy ra lỗi không mong muốn.";
       if (error instanceof AxiosError) {
         const axiosError = error as AxiosError<ApiErrorDTO>;
         if (axiosError.response && axiosError.response.data) {
@@ -165,7 +155,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
         }
       }
       toast({
-        title: "Permintaan Gagal",
+        title: "Yêu cầu thất bại",
         description: errorMessage,
         variant: "destructive",
       });
@@ -180,7 +170,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
     <>
       <form onSubmit={handleSubmitLogin(onLoginSubmit)} className="space-y-4">
         <div className="space-y-1">
-          <Label htmlFor="login-email">Emel</Label>
+          <Label htmlFor="login-email">Email</Label>
           <Input
             id="login-email"
             type="email"
@@ -196,7 +186,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
           )}
         </div>
         <div className="space-y-1">
-          <Label htmlFor="login-password">Kata Laluan</Label>
+          <Label htmlFor="login-password">Mật khẩu</Label>
           <div className="relative">
             <Input
               id="login-password"
@@ -212,7 +202,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
               size="icon"
               className="absolute right-1 top-1/2 -translate-y-1/2 h-7 w-7 text-muted-foreground hover:text-primary"
               onClick={togglePasswordVisibility}
-              aria-label={showPassword ? "Sembunyikan kata laluan" : "Tunjukkan kata laluan"}
+              aria-label={showPassword ? "Ẩn mật khẩu" : "Hiển thị mật khẩu"}
             >
               {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </Button>
@@ -227,30 +217,30 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
           {isSubmittingLogin ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Sedang Log Masuk...
+              Đang đăng nhập...
             </>
           ) : (
-            "Log Masuk"
+            "Đăng nhập"
           )}
         </Button>
         <div className="text-center text-sm">
           <Dialog open={isResetPasswordDialogOpen} onOpenChange={setIsResetPasswordDialogOpen}>
             <DialogTrigger asChild>
               <Button variant="link" type="button" className="text-primary hover:underline p-0 h-auto">
-                Lupa kata laluan?
+                Quên mật khẩu?
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Lupa Kata Laluan?</DialogTitle>
+                <DialogTitle>Quên mật khẩu?</DialogTitle>
                 <DialogDescription>
-                  Masukkan alamat emel anda di bawah. Jika ia wujud dalam sistem kami, kami akan menghantar pautan untuk menetapkan semula kata laluan anda.
+                  Nhập địa chỉ email của bạn dưới đây. Nếu email tồn tại trong hệ thống của chúng tôi, chúng tôi sẽ gửi liên kết để đặt lại mật khẩu của bạn.
                 </DialogDescription>
               </DialogHeader>
               <form onSubmit={handleSubmitResetEmail(onResetPasswordEmailSubmit)} className="space-y-4 py-4">
                 <div className="space-y-1">
                   <Label htmlFor="reset-email" className="sr-only">
-                    Emel
+                    Email
                   </Label>
                   <Input
                     id="reset-email"
@@ -270,10 +260,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLoginSuccess }) => {
                     {isSubmittingResetEmail ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Menghantar...
+                        Đang gửi...
                       </>
                     ) : (
-                      "Hantar Pautan Tetapan Semula"
+                      "Gửi liên kết đặt lại"
                     )}
                   </Button>
                 </DialogFooter>
