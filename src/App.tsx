@@ -18,6 +18,7 @@ import UserProfilePage from "./pages/UserProfilePage";
 import CompleteRegistrationPage from "./pages/CompleteRegistrationPage";
 import TicketEditorPage from "./pages/TicketEditorPage";
 import PaymentRedirectPage from "./pages/PaymentRedirectPage";
+import ComputerProducts from "./pages/ComputerProducts";
 
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { ThemeProvider } from "./providers/ThemeProvider";
@@ -99,6 +100,7 @@ const AppRoutes = () => {
           <Route path="/nonMemberOrderInquiry" element={<AnimatedPage><NonMemberOrderInquiry /></AnimatedPage>} />
           <Route path="/complete-registration" element={<AnimatedPage><CompleteRegistrationPage /></AnimatedPage>} />
           <Route path="/paymentRedirect" element={<AnimatedPage><PaymentRedirectPage /></AnimatedPage>} />
+          <Route path="/computer-products" element={<AnimatedPage><ComputerProducts /></AnimatedPage>} />
           
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>

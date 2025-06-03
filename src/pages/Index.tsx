@@ -1,6 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import TicketDisplaySection from "@/components/TicketDisplaySection";
+import ProductDisplaySection from "@/components/ProductDisplaySection";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselApi, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 import ContactUsTrigger from "@/components/documents/ContactUsTrigger";
+import { computerProducts } from "@/data/computerProducts";
 import { cn } from "@/lib/utils";
 import { fetchAllTicketGroups } from "@/services/ticketService";
 import { FetchTicketGroupsResponseDTO, TicketGroupDTO } from "@/types/api/ticket.api";
@@ -46,11 +47,16 @@ const Index = () => {
     refetchOnWindowFocus: false,
   });
 
+  const isLoadingComputerProducts = false;
+  const computerProductsError = null;
+
   const ticketGroups: TicketGroupDTO[] | undefined = ticketApiResponse?.respCode === 2000 ? ticketApiResponse.result.ticketGroups : undefined;
 
-  const displayError =
+  const ticketDisplayError =
     ticketGroupsError ||
     (ticketApiResponse && ticketApiResponse.respCode !== 2000 ? new Error(ticketApiResponse.respDesc || t("pages.Index.error.failedToFetchTickets")) : null);
+
+  const productDisplayError = computerProductsError;
 
   const carouselImages = [
     { src: "/banner1.jpg", alt: "Banner 1", label: "Banner 1" },
@@ -74,30 +80,12 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Categories for filter popover (assuming these might be dynamic or from a config later)
-  // const categories = [
-  //   { name: t("pages.Index.categories.attractionsLeisure"), count: 42, iconName: "Ticket" },
-  //   { name: t("pages.Index.categories.tourismTransport"), count: 28, iconName: "Bus" },
-  //   { name: t("pages.Index.categories.events"), count: 35, iconName: "CalendarIcon" },
-  //   { name: t("pages.Index.categories.exhibitions"), count: 19, iconName: "ImageIcon" },
-  //   { name: t("pages.Index.categories.others"), count: 14, iconName: "MoreHorizontal" },
-  // ];
-
-  // const LucideIcon = ({ name, className }: { name: string; className?: string }) => {
-  //   const IconComponents: { [key: string]: React.ElementType } = {
-  //     Ticket,
-  //     Bus,
-  //     CalendarIcon,
-  //     ImageIcon,
-  //     MoreHorizontal,
-  //     Tag,
-  //   };
-  //   const IconComponent = IconComponents[name];
-  //   return IconComponent ? <IconComponent className={className} /> : <Tag className={className} />;
-  // };
-
   const handleScrollToTickets = () => {
     ticketSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const handleScrollToProducts = () => {
+    document.getElementById('product-display-section')?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -210,7 +198,7 @@ const Index = () => {
                               Computer Store cam kết mang đến cho khách hàng trải nghiệm mua sắm hoàn hảo với giá cả cạnh tranh nhất trên thị trường, đồng thời đảm bảo chất lượng sản phẩm và dịch vụ tư vấn chuyên nghiệp.
                             </p>
                             <div className="flex flex-col sm:flex-row justify-center gap-3 pt-1">
-                              <Button className="gap-2" size="sm" onClick={handleScrollToTickets}>
+                              <Button className="gap-2" size="sm" onClick={handleScrollToProducts}>
                                 <Search className="h-4 w-4" />
                                 Xem sản phẩm
                               </Button>
@@ -267,16 +255,16 @@ const Index = () => {
         </div>
       </div>
 
-      <section ref={ticketSectionRef} id="ticket-display-section" className="py-6 sm:py-8 w-full bg-muted/50 scroll-mt-24 md:scroll-mt-28">
+      <section ref={ticketSectionRef} id="product-display-section" className="py-6 sm:py-8 w-full bg-muted/50 scroll-mt-24 md:scroll-mt-28">
         <div className="container mx-auto px-4 sm:px-6 md:px-8">
           <div className="grid grid-cols-12 gap-4 sm:gap-6">
             <div className="col-span-12">
               <div className="mb-6 sm:mb-8 text-center md:text-left">
-                <h2 className="text-2xl sm:text-3xl font-bold">Sản phẩm</h2>
-                <p className="text-muted-foreground text-sm sm:text-base">Tại đây</p>
+                <h2 className="text-2xl sm:text-3xl font-bold">Sản phẩm Máy Tính</h2>
+                <p className="text-muted-foreground text-sm sm:text-base">Các sản phẩm máy tính chất lượng cao</p>
               </div>
               <div className="md:border md:border-border/50 md:p-4 md:rounded-lg md:bg-card md:shadow-sm">
-                <TicketDisplaySection ticketGroups={ticketGroups} isLoading={isLoadingTicketGroups} error={displayError} />
+                <ProductDisplaySection products={computerProducts} isLoading={isLoadingComputerProducts} error={productDisplayError} />
               </div>
             </div>
           </div>
