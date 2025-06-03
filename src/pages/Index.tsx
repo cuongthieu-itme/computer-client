@@ -53,11 +53,11 @@ const Index = () => {
     (ticketApiResponse && ticketApiResponse.respCode !== 2000 ? new Error(ticketApiResponse.respDesc || t("pages.Index.error.failedToFetchTickets")) : null);
 
   const carouselImages = [
-    { src: "/e-t-0.jpg", alt: t("pages.Index.carousel.alt.banner0"), label: t("pages.Index.carousel.label.excitingEvents") },
-    { src: "/e-t-1.jpg", alt: t("pages.Index.carousel.alt.banner1"), label: t("pages.Index.carousel.label.attractionsLeisure") },
-    { src: "/e-t-2.jpg", alt: t("pages.Index.carousel.alt.banner2"), label: t("pages.Index.carousel.label.tourismTransport") },
-    { src: "/e-t-3.jpg", alt: t("pages.Index.carousel.alt.banner3"), label: t("pages.Index.carousel.label.eventsExhibitions") },
-    { src: "/e-t-4.jpg", alt: t("pages.Index.carousel.alt.banner4"), label: t("pages.Index.carousel.label.others") },
+    { src: "/banner1.jpg", alt: "Banner 1", label: "Banner 1" },
+    { src: "/banner2.jpg", alt: "Banner 2", label: "Banner 2" },
+    { src: "/banner3.png", alt: "Banner 3", label: "Banner 3" },
+    { src: "/banner4.jpg", alt: "Banner 4", label: "Banner 4" },
+    { src: "/banner5.png", alt: "Banner 5", label: "Banner 5" },
   ];
 
   useEffect(() => {
